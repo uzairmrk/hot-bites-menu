@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hot Bites – VIP Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--red:#b30000;--orange:#ff4d00;--gold:#ffcc00;--bronze:#cc6600}
+  body{min-height:100vh;font-family:'Roboto',sans-serif;color:#fff;padding:40px 16px 60px;
+    background:repeating-linear-gradient(45deg,rgba(255,255,255,.02) 0 14px,rgba(0,0,0,.12) 14px 28px),
+      radial-gradient(circle at 50% 20%,#1e1616 0%,#120c0c 70%);background-color:#120c0c}
+  .wrap{max-width:720px;margin:0 auto;perspective:1400px}
+  header{text-align:center;margin-bottom:26px}
+  .kicker{color:var(--orange);font-weight:700;letter-spacing:.2em;font-size:14px}
+  h1{font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(54px,14vw,96px);line-height:1;margin-top:6px;
+    color:#fff;text-shadow:0 5px 0 rgba(0,0,0,.6),0 12px 22px rgba(0,0,0,.5)}
+  h1 span{color:var(--red);text-shadow:0 4px 0 #000,0 10px 20px rgba(179,0,0,.45)}
+  header p{color:#9a9a9a;margin-top:8px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px}
+  .item{cursor:pointer;border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:16px 12px;text-align:center;color:#fff;
+    background:linear-gradient(160deg,#2a1d1d,#150e0e);font:inherit;
+    box-shadow:0 18px 30px rgba(0,0,0,.6),0 6px 0 #0a0606,inset 0 2px 0 rgba(255,255,255,.1);
+    transition:transform .25s,box-shadow .25s}
+  .item:hover{transform:translateY(-6px) rotateX(4deg)}
+  .item.active{box-shadow:0 0 0 2px var(--gold),0 0 28px rgba(255,204,0,.35),0 18px 30px rgba(0,0,0,.6)}
+  .item .pic{font-size:54px;width:90px;height:90px;margin:0 auto 8px;display:grid;place-items:center;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#4a2c2c,#1a1212);box-shadow:inset 0 4px 10px rgba(0,0,0,.6),0 3px 0 rgba(255,255,255,.08)}
+  .item h3{font-family:'Oswald',sans-serif;letter-spacing:.06em;font-size:18px}
+  .item small{color:var(--gold);font-size:13px}
+
+  /* detail / VIP profile */
+  #detail{margin-top:26px;border-radius:26px;padding:24px 20px;display:none;
+    background:linear-gradient(160deg,#2a1d1d,#1a1212 55%,#120c0c);border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 30px 60px rgba(0,0,0,.7),0 10px 0 #0a0606,inset 0 2px 0 rgba(255,255,255,.1)}
+  #detail.open{display:block;animation:rise .35s ease-out}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .hero{height:210px;border-radius:20px;display:grid;place-items:center;position:relative;overflow:hidden;font-size:120px;
+    background:radial-gradient(circle at 50% 40%,#ff6a1f 0%,#b30000 55%,#2a0a0a 100%);
+    box-shadow:inset 0 8px 20px rgba(0,0,0,.5)}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .vip{position:absolute;top:12px;right:12px;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.14em;color:#3a1e00;
+    background:linear-gradient(#fff1a8,var(--gold) 50%,var(--bronze));box-shadow:0 3px 0 #8a4300}
+  .head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+  .head h2{font-family:'Oswald',sans-serif;font-size:32px;letter-spacing:.04em}
+  .score{display:flex;align-items:center;gap:10px}
+  .score b{font-family:'Oswald',sans-serif;font-size:36px;color:var(--gold)}
+  .score small{display:block;color:#9a9a9a;font-size:12px}
+  .desc{color:#c8c8c8;margin-top:6px;line-height:1.5;font-size:15px}
+  .rv-title{font-family:'Oswald',sans-serif;letter-spacing:.1em;color:var(--gold);font-size:18px;margin:22px 0 10px}
+  .reviews{display:grid;gap:12px}
+  .review{display:flex;gap:12px;padding:14px;border-radius:16px;background:rgba(255,255,255,.06);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1);transition:transform .25s,box-shadow .25s}
+  .review:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(0,0,0,.5),0 0 20px rgba(255,204,0,.22)}
+  .av{flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-family:'Oswald',sans-serif;font-weight:700;color:#3a1e00;
+    background:radial-gradient(circle at 32% 28%,#fff1a8,var(--gold) 45%,var(--bronze));box-shadow:0 3px 0 #8a4300,inset 0 2px 3px rgba(255,255,255,.7)}
+  .review h4{font-size:14px}
+  .review h4 em{font-style:normal;color:var(--gold);margin-left:8px;font-weight:400;letter-spacing:1px}
+  .review p{font-size:14px;color:#c8c8c8;line-height:1.45;margin-top:3px}
+  .review small{color:#7d7d7d;font-size:12px}
+  .tag{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:.08em;background:#3a2a2a;color:#bbb}
+  .more{display:block;margin:16px auto 0;padding:10px 24px;border:0;border-radius:10px;cursor:pointer;font-weight:700;color:#fff;font-size:14px;
+    background:linear-gradient(#ff6a1f,var(--orange));box-shadow:0 4px 0 #a83300,0 8px 14px rgba(0,0,0,.5)}
+  .more:active{transform:translateY(3px);box-shadow:0 1px 0 #a83300}
+
+  .info{margin-top:34px;text-align:center;color:#b5b5b5;font-size:14px;line-height:1.8;padding:26px 20px 28px;border-radius:26px;
+    background:linear-gradient(160deg,#2a1d1d 0%,#1a1212 55%,#120c0c 100%);border:1px solid rgba(255,255,255,.08);
+    transform:perspective(1200px) rotateX(6deg);transform-origin:center top;
+    box-shadow:0 36px 60px rgba(0,0,0,.75),0 12px 0 #0a0606,inset 0 2px 0 rgba(255,255,255,.1),inset 0 -6px 14px rgba(0,0,0,.5)}
+  .info .phone{display:inline-block;margin:6px 0 2px;padding:6px 20px;border-radius:12px;font-family:'Oswald',sans-serif;font-size:22px;letter-spacing:.06em;
+    color:var(--gold);text-shadow:0 2px 0 #000;background:#120c0c;box-shadow:inset 0 4px 10px rgba(0,0,0,.8),0 2px 0 rgba(255,255,255,.1)}
+  .info a{color:var(--gold);text-decoration:none;font-weight:700}
+  .cta{display:inline-block;margin-top:16px;padding:15px 34px;border-radius:16px;color:#fff;font-weight:700;font-size:16px;text-decoration:none;
+    background:linear-gradient(#52e88a 0%,#2fd36b 35%,#128c3a 100%);text-shadow:0 2px 0 rgba(0,0,0,.35);
+    box-shadow:0 8px 0 #0a5a25,0 16px 22px rgba(0,0,0,.6),inset 0 2px 0 rgba(255,255,255,.45),inset 0 -3px 6px rgba(0,0,0,.25);
+    transition:transform .12s,box-shadow .12s}
+  .cta:hover{transform:translateY(-3px);box-shadow:0 11px 0 #0a5a25,0 20px 26px rgba(0,0,0,.6),inset 0 2px 0 rgba(255,255,255,.45)}
+  .cta:active{transform:translateY(6px);box-shadow:0 2px 0 #0a5a25,0 4px 8px rgba(0,0,0,.6),inset 0 2px 0 rgba(255,255,255,.3)}
+  button:focus-visible,a:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">— VIP MENU</div>
+    <h1>HOT <span>BITES</span></h1>
+    <p>Tap any item to see its photo and guest reviews.</p>
+  </header>
+
+  <div class="grid" id="grid"></div>
+
+  <section id="detail" aria-live="polite">
+    <div class="hero" id="hero"></div>
+    <div class="head">
+      <h2 id="dName"></h2>
+      <div class="score"><b id="dScore"></b><div><span id="dStars" style="color:#ffcc00"></span><small id="dCount"></small></div></div>
+    </div>
+    <p class="desc" id="dDesc"></p>
+    <div class="rv-title">GUEST REVIEWS</div>
+    <div class="reviews" id="reviews"></div>
+    <button class="more" id="moreBtn" type="button">Show more reviews</button>
+  </section>
+
+  <div class="info">
+    Street Number 21, Zakariya Town, Multan · Open until 2 AM<br>
+    Dine-in · Drive-through · No-contact delivery<br>
+    <a class="phone" href="tel:+923225300155">+92 322 5300155</a><br>
+    <a class="cta" href="https://wa.me/923225300155" target="_blank" rel="noopener">Order on WhatsApp</a>
+  </div>
+</div>
+
+<script>
+  /* ====== EDIT HERE ======
+     img: put a real photo URL to replace the emoji picture.
+     SHOW_SAMPLES: set to false to show only real reviews.        */
+  var SHOW_SAMPLES = true;
+  var SAMPLE_COUNT = 100;
+
+  var MENU = [
+    {id:'zinger', name:'Zinger Burger', emoji:'🍔', img:'', desc:'Crispy chicken zinger burger — guests call it very tasty for the price.'},
+    {id:'pizza', name:'Pizza', emoji:'🍕', img:'', desc:'Soft, cheesy pizza at an affordable price.'},
+    {id:'shawarma', name:'Shawarma', emoji:'🌯', img:'', desc:'Fresh-wrapped shawarma, hot off the grill.'},
+    {id:'mughlai', name:'Hot Chicken Mughlai', emoji:'🍗', img:'', desc:'Our Mughlai-style hot chicken special.'}
+  ];
+
+  /* Real reviews (from Google Maps) */
+  var REAL = {
+    zinger:[{n:'Visitor',r:5,t:'Very good taste in such a reasonable price, and their zinger burger is also very tasty.',d:'4 years ago'}],
+    pizza:[{n:'Anza Zaman',r:5,t:'Pizza was good and tasty. Overall 10/10 experience 👌 Rates were also affordable 🫰',d:'3 months ago'},
+           {n:'Hamid Abid',r:5,t:'Taste and quality was excellent 👍🏻 Pizzas 🍕 were very soft and cheesy 🧀',d:'3 years ago'}],
+    shawarma:[], mughlai:[]
+  };
+
+  /* Sample reviews for design preview only (marked SAMPLE) */
+  var NAMES = ['Ali','Hamza','Sara','Bilal','Ayesha','Usman','Fatima','Zain','Hira','Talha','Maryam','Faisal','Noor','Saad','Iqra','Daniyal','Rabia','Hassan','Mehwish','Kashif'];
+  var LAST = ['Khan','Raza','Ahmed','Malik','Sheikh','Butt','Qureshi','Iqbal','Chaudhry','Siddiqui'];
+  var TXT = {
+    zinger:['Super crispy and juicy, great value.','Best zinger in the area!','Sauce is perfect, will order again.','Filling and tasty, fast service.','Crunchy chicken, soft bun. Loved it.'],
+    pizza:['Cheesy and soft, tastes fresh.','Great pizza for the price.','Crust was perfect, family loved it.','Generous toppings, hot and fresh.','Good for sharing, tasty!'],
+    shawarma:['Juicy filling and great garlic sauce.','Tasty wrap, nicely grilled.','Best late-night shawarma.','Fresh bread, good portion.','Spicy and satisfying.'],
+    mughlai:['Rich flavour, perfectly spicy.','Tender chicken, lovely gravy.','Great with naan, tasty.','Authentic taste, good portion.','Loved the Mughlai masala.']
+  };
+  var WHEN = ['1 week ago','2 weeks ago','3 weeks ago','1 month ago','2 months ago','3 months ago','6 months ago','1 year ago'];
+
+  function seeded(i){var x=Math.sin(i*9301+49297)*233280;return x-Math.floor(x)}
+  function samples(id){
+    var out=[],k=MENU.findIndex(function(m){return m.id===id});
+    for(var i=0;i<SAMPLE_COUNT;i++){
+      var s=seeded(i+k*1000), s2=seeded(i*7+k*31);
+      out.push({n:NAMES[Math.floor(s*NAMES.length)]+' '+LAST[Math.floor(s2*LAST.length)],
+        r:s2>0.2?5:4, t:TXT[id][Math.floor(s*TXT[id].length)], d:WHEN[Math.floor(s2*WHEN.length)], sample:true});
+    }
+    return out;
+  }
+  function allReviews(id){return REAL[id].concat(SHOW_SAMPLES?samples(id):[])}
+  function stars(r){return '★★★★★'.slice(0,r)+'☆☆☆☆☆'.slice(0,5-r)}
+
+  var grid=document.getElementById('grid'), shown=0, list=[], current=null, PAGE=10;
+
+  MENU.forEach(function(m){
+    var b=document.createElement('button');
+    b.className='item';b.type='button';b.dataset.id=m.id;
+    b.innerHTML='<div class="pic">'+m.emoji+'</div><h3>'+m.name+'</h3><small>'+allReviews(m.id).length+' reviews</small>';
+    b.addEventListener('click',function(){openItem(m.id)});
+    grid.appendChild(b);
+  });
+
+  function openItem(id){
+    var m=MENU.find(function(x){return x.id===id});
+    current=id;list=allReviews(id);shown=0;
+    document.querySelectorAll('.item').forEach(function(el){el.classList.toggle('active',el.dataset.id===id)});
+    document.getElementById('hero').innerHTML=(m.img?'<img src="'+m.img+'" alt="'+m.name+'">':m.emoji)+'<span class="vip">VIP</span>';
+    document.getElementById('dName').textContent=m.name;
+    document.getElementById('dDesc').textContent=m.desc;
+    var avg=list.length?list.reduce(function(a,r){return a+r.r},0)/list.length:0;
+    document.getElementById('dScore').textContent=avg?avg.toFixed(1):'–';
+    document.getElementById('dStars').textContent=avg?stars(Math.round(avg)):'';
+    document.getElementById('dCount').textContent=list.length+' reviews';
+    document.getElementById('reviews').innerHTML='';
+    renderMore();
+    var d=document.getElementById('detail');d.classList.remove('open');void d.offsetWidth;d.classList.add('open');
+    d.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  function renderMore(){
+    var box=document.getElementById('reviews');
+    list.slice(shown,shown+PAGE).forEach(function(r){
+      var el=document.createElement('div');el.className='review';
+      el.innerHTML='<div class="av">'+r.n.charAt(0)+'</div><div><h4>'+r.n+'<em>'+stars(r.r)+'</em>'+(r.sample?'<span class="tag">SAMPLE</span>':'')+'</h4><p>'+r.t+'</p><small>'+r.d+'</small></div>';
+      box.appendChild(el);
+    });
+    shown+=PAGE;
+    document.getElementById('moreBtn').style.display=shown<list.length?'block':'none';
+    if(!list.length)box.innerHTML='<p class="desc">No reviews yet.</p>';
+  }
+  document.getElementById('moreBtn').addEventListener('click',renderMore);
+</script>
+</body>
+</html>
